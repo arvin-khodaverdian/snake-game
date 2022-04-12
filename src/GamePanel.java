@@ -16,13 +16,41 @@ public class GamePanel extends JPanel implements ActionListener{
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
     int bodyParts = 6;
-    int applesEaten;
+    private int applesEaten;
+
     int appleX;
     int appleY;
     char direction = 'R';
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     boolean running = false;
     Timer timer;
     Random random;
+
+    public int getApplesEaten() {
+        return applesEaten;
+    }
+
+    public void setApplesEaten(int applesEaten) {
+        this.applesEaten = applesEaten;
+    }
+
+    public int[] getScoreList() {
+        return scoreList;
+    }
+
+    public void setScoreList(int[] scoreList) {
+        this.scoreList = scoreList;
+    }
+
+    private int[] scoreList = {0, 0, 0, 0, 0};
 
     GamePanel(){
         random = new Random();
@@ -37,6 +65,7 @@ public class GamePanel extends JPanel implements ActionListener{
         running = true;
         timer = new Timer(DELAY,this);
         timer.start();
+        checkRunningLeaderboard();
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -72,8 +101,8 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     public void newApple(){
-        appleX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-        appleY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+        appleX = random.nextInt(SCREEN_WIDTH/UNIT_SIZE)*UNIT_SIZE;
+        appleY = random.nextInt(SCREEN_HEIGHT/UNIT_SIZE)*UNIT_SIZE;
 
     }
     public void move(){
@@ -154,6 +183,7 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         repaint();
     }
+
     public class MyKeyAdapter extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e){
@@ -179,6 +209,12 @@ public class GamePanel extends JPanel implements ActionListener{
                     }
                     break;
             }
+        }
+    }
+
+    public void checkRunningLeaderboard(){
+        if(!running){
+            new Leaderboard();
         }
     }
 }
